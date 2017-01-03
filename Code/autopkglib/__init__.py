@@ -261,7 +261,8 @@ class Processor(object):
             return
 
         try:
-            FoundationPlist.writePlist(self.env, self.outfile)
+            # FoundationPlist.writePlist(self.env, self.outfile)
+            print FoundationPlist.writePlistToString(self.env)
         except BaseException as err:
             raise ProcessorError(err)
 
