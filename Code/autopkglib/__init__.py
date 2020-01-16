@@ -403,7 +403,7 @@ class Processor:
         else:
             self.infile = infile
         if outfile is None:
-            self.outfile = sys.stdout
+            self.outfile = sys.stdout.buffer
         else:
             self.outfile = outfile
 
@@ -427,7 +427,7 @@ class Processor:
         """Read environment from input plist."""
 
         try:
-            indata = self.infile.read()
+            indata = self.infile.buffer.read()
             if indata:
                 self.env = plistlib.loads(indata)
             else:
@@ -444,6 +444,8 @@ class Processor:
         try:
             with open(self.outfile, "wb") as f:
                 plistlib.dump(self.env, f)
+        except TypeError:
+            plistlib.dump(self.env, self.outfile)
         except BaseException as err:
             raise ProcessorError(err)
 
